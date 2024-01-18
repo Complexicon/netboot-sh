@@ -1,0 +1,7 @@
+name: do-build
+description: compose docker container for building a custom alpine linux iso
+author: cmplx
+
+runs:
+  using: docker
+  image: Dockerfile
