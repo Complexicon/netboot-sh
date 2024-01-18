@@ -5,7 +5,7 @@ profile_installeriso() {
 		Network connection is required."
 	profile_base
 	profile_abbrev="install"
-	apkovl="/src/aports/scripts/genapkovl-mkimgoverlay.sh"
+	apkovl="overlay.sh"
 	image_ext="iso"
 	arch="aarch64 armv7 x86 x86_64 ppc64le riscv64 s390x"
 	output_format="iso"
