@@ -17,6 +17,6 @@ cp BCD_reference_bios BCD_patched_bios
 for x in $MATCHES
 do
     echo "patching at [$x]"
-    dd if=OFFSET of=BCD_patched_bios bs=1 seek=$x
-    dd if=UUID of=BCD_patched_bios bs=1 seek=$(($x + 24))
+    dd if=OFFSET of=BCD_patched_bios bs=1 seek=$x conv=notrunc
+    dd if=UUID of=BCD_patched_bios bs=1 seek=$(($x + 24)) conv=notrunc
 done
