@@ -100,7 +100,7 @@ func main() {
 		log.Fatal("Usage:\n go-winstall-helper -h")
 	}
 
-	var r = WebIsoReader{url: "https://drive.massgrave.dev/de-de_windows_10_enterprise_ltsc_2021_x64_dvd_71796d33.iso"}
+	var r = WebIsoReader{url: *url}
 	u := udf.NewUdfFromReader(&r)
 
 	log.Println("locating install.wim offset from", r.url)
