@@ -2,9 +2,11 @@
 TARGET_DISK=$1
 BOOT_PART_SIZE=200M
 WINDOWS_ISO="http://drive.massgrave.dev/de_windows_10_enterprise_ltsc_2019_x64_dvd_34efbe54.iso"
+WINBASE="/mnt/win"
+BOOTBASE="/mnt/boot"
 
-mkdir -p /mnt/boot
-mkdir -p /mnt/win
+mkdir -p $BOOTBASE
+mkdir -p $WINBASE
 mkdir -p /mnt/install
 
 # to create the partitions programatically (rather than manually)
@@ -36,29 +38,29 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TARGET_DISK}
   q # and we're done
 EOF
 
-mkfs.ntfs -f $TARGET_DISK\1
-mkfs.ntfs -f $TARGET_DISK\2
+mkfs.ntfs -f ${TARGET_DISK}1
+mkfs.ntfs -f ${TARGET_DISK}2
 
 ./go-winstall-helper --mount=/mnt/install --url="$WINDOWS_ISO" &
 until [ -f /mnt/install/install.wim ]
 do
      sleep 1
 done
-echo "Ready to install. appling image to $TARGET_DISK\2"
-wimapply /mnt/install/install.wim 1 $TARGET_DISK\2
+echo "Ready to install. appling image to ${TARGET_DISK}2"
+wimapply /mnt/install/install.wim 1 ${TARGET_DISK}2
 umount /mnt/install
 
-mount -t ntfs $TARGET_DISK\1 /mnt/boot
-mount -t ntfs $TARGET_DISK\2 /mnt/win
+mount -t ntfs ${TARGET_DISK}1 $BOOTBASE
+mount -t ntfs ${TARGET_DISK}2 $WINBASE
 
-./get-ntldr.sh /mnt/win
-./transplant-ntldr.sh $TARGET_DISK\1
+./get-ntldr.sh $WINBASE
+./transplant-ntldr.sh ${TARGET_DISK}1
 
-cp -R /mnt/win/Windows/Boot/PCAT/ /mnt/boot/Boot
-mv /mnt/boot/Boot/bootmgr /mnt/newboot
-mv /mnt/boot/Boot/bootnxt /mnt/newboot
+cp -R /mnt/win/Windows/Boot/PCAT/ $BOOTBASE/Boot
+mv $BOOTBASE/Boot/bootmgr $BOOTBASE
+mv $BOOTBASE/Boot/bootnxt $BOOTBASE
 
-./patch-bcd-bios.sh $TARGET_DISK\2
-mv BCD_patched_bios /mnt/boot/Boot/BCD
+./patch-bcd-bios.sh ${TARGET_DISK}2
+mv BCD_patched_bios $BOOTBASE/Boot/BCD
 
-dd if=/usr/lib/syslinux/mbr/mbr.bin of=$TARGET_DISK
+dd if=/usr/share/syslinux/mbr.bin of=${TARGET_DISK}
