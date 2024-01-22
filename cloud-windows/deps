@@ -1,0 +1,7 @@
+syslinux ntfs-3g ntfs-3g-progs xxd libc6-compat util-linux fuse coreutils grep
+
+apk del device-mapper
+
+wimlib > activate community repo
+
+modprobe fuse
