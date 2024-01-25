@@ -13,3 +13,4 @@ clear
 uname -a
 cat /etc/alpine-release
 echo "entering debug shell"
+sh
