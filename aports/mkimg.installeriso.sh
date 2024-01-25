@@ -1,15 +1,12 @@
 profile_installeriso() {
 	title="Installer ISO"
-	desc="Alpine as it was intended.
-		Just enough to get you started.
-		Network connection is required."
+	desc="Network connection is required."
 	profile_base
 	profile_abbrev="install"
 	apkovl="overlay.sh"
 	image_ext="iso"
-	arch="aarch64 armv7 x86 x86_64 ppc64le riscv64 s390x"
+	arch="x86_64"
 	output_format="iso"
-	#kernel_addons="xtables-addons"
 	modloop_sign=no
-	apks="$apks agetty debootstrap nano curl wget"
+	apks="$apks agetty gum curl"
 }
