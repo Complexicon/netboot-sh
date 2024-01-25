@@ -8,5 +8,5 @@ profile_installeriso() {
 	arch="x86_64"
 	output_format="iso"
 	modloop_sign=no
-	apks="$apks agetty gum curl"
+	apks="$apks agetty gum curl jq"
 }
