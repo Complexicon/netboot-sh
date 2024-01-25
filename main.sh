@@ -1,4 +1,5 @@
 #!/bin/sh
-SCRIPTS=$(curl https://api.github.com/repos/Complexicon/netboot-sh/contents | jq . [] \| select(.name\|endswith("sh")) \| .name)
-echo $SCRIPTS
-#sh <(curl -s -L git.cmplx.dev/netboot-sh/raw/main/test.sh) #edit this
+SCRIPTS=$(curl --silent https://api.github.com/repos/Complexicon/netboot-sh/contents | jq -r ". [] | select(.name|endswith(\"sh\")) | .name")
+echo "Choose which script to run"
+SCRIPT_TO_RUN=$(echo $SCRIPTS | gun choose)
+sh <(curl -s -L git.cmplx.dev/netboot-sh/raw/main/${SCRIPT_TO_RUN})
