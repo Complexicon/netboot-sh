@@ -54,6 +54,7 @@ alpine-base
 gum
 curl
 agetty
+jq
 EOF
 
 makefile root:root 0755 "$tmp"/etc/inittab <<EOF
