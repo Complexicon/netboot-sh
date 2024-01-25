@@ -1,5 +1,6 @@
 on: [workflow_dispatch]
 
+name: Build ISO
 jobs:
   do-build:
     runs-on: ubuntu-latest
