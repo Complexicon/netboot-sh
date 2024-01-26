@@ -52,13 +52,13 @@ find_disks() {
 
 DISKS=$(find_disks)
 TARGET_DISK=$(echo "$DISKS" | gum choose | cut -d ' ' -f 1)
-echo "Installing Windows to $TARGET_DISK"
+echo "Installing Windows to /dev/$TARGET_DISK"
 
 # TODO make iso selection dynamic. see https://github.com/massgravel/msdl
 
 if [ -d /sys/firmware/efi ]
 then
-  ./do-windows-cloud-install-efi.sh $TARGET_DISK
+  ./do-windows-cloud-install-efi.sh /dev/$TARGET_DISK
 else
-  ./do-windows-cloud-install-bios.sh $TARGET_DISK
+  ./do-windows-cloud-install-bios.sh /dev/$TARGET_DISK
 fi
