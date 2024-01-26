@@ -10,11 +10,11 @@ mkdir -p $WINBASE
 mkdir -p /mnt/install
 
 echo "creating new gpt partition table for ${TARGET_DISK}"
-echo "label: gpt" | sfdisk ${TARGET_DISK} -q # create empty gpt partition table
+echo "label: gpt" | sfdisk ${TARGET_DISK} --wipe always -q # create empty gpt partition table
 
 echo "setting up partitions"
-echo ", ${BOOT_PART_SIZE}, U" | sfdisk ${TARGET_DISK} -q # create efi partition
-echo ", ," | sfdisk -a ${TARGET_DISK} -q # create main partition
+echo ", ${BOOT_PART_SIZE}, U" | sfdisk --wipe always ${TARGET_DISK} -q # create efi partition
+echo ", ," | sfdisk -a ${TARGET_DISK} --wipe always -q # create main partition
 
 mkfs.vfat -f ${TARGET_DISK}1
 mkfs.ntfs -f ${TARGET_DISK}2
