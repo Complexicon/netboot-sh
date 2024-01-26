@@ -75,6 +75,7 @@ EOF
 makefile root:root 0755 "$tmp"/etc/profile <<EOF
 #!/bin/sh
 clear
+source /lib/libalpine.sh
 
 apk add --quiet --no-progress --virtual .deps kbd-bkeymaps
 echo "Select Keymap:"
