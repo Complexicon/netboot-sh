@@ -13,4 +13,4 @@ BYTESWAP=$(byteswap $FIRST)$(byteswap $SECOND)$(byteswap $THIRD)
 KEEP=$FOURTH$FIFTH
 
 echo "ref: $FIRST $SECOND $THIRD $FOURTH $FIFTH"
-printf "0: %x%x\n" $((0x$BYTESWAP)) $((0x$KEEP)) | xxd -r -g0 >> $2
+printf "0: %x%x\n" $((0x$BYTESWAP)) $((0x$KEEP)) | xxd -r -g0 > $2
