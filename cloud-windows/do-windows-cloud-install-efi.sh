@@ -20,6 +20,7 @@ echo "final disk geometry"
 sfdisk -l ${TARGET_DISK}
 
 mdev -s
+mdev -s
 
 mkfs.vfat ${TARGET_DISK}1
 mkfs.ntfs -f ${TARGET_DISK}2
