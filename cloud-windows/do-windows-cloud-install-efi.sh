@@ -14,7 +14,7 @@ echo "label: gpt" | sfdisk ${TARGET_DISK} -W always -q # create empty gpt partit
 
 echo "setting up partitions"
 echo ", ${BOOT_PART_SIZE}, U" | sfdisk -W always ${TARGET_DISK} -q # create efi partition
-echo ", ," | sfdisk -a ${TARGET_DISK} -W always -q # create main partition
+echo ", , EBD0A0A2-B9E5-4433-87C0-68B6B72699C7" | sfdisk -a ${TARGET_DISK} -W always -q # create main partition
 
 echo "final disk geometry"
 sfdisk -l ${TARGET_DISK}
