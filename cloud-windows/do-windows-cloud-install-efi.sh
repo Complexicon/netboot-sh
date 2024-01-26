@@ -44,3 +44,7 @@ cp $BOOTBASE/EFI/Microsoft/Boot/bootmgfw.efi $BOOTBASE/EFI/Boot/bootx64.efi
 
 ./patch-bcd-efi.sh ${TARGET_DISK} 2
 cp BCD_patched_efi $BOOTBASE/EFI/Microsoft/Boot/BCD
+
+mkdir -p $WINBASE/Windows/Panther
+curl https://git.cmplx.dev/winsetup/main/unattend.xml > $WINBASE/Windows/Panther/unattend.xml
+reboot
