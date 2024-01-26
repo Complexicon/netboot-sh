@@ -75,10 +75,20 @@ EOF
 makefile root:root 0755 "$tmp"/etc/profile <<EOF
 #!/bin/sh
 clear
-setup-keymap
+
+apk add --quiet --no-progress --virtual .deps kbd-bkeymaps
+echo "Select Keymap:"
+KEYMAP=$(ls -1 /usr/share/bkeymaps | gum filter --sort --limit 1 --height 20)
+test "$KEYMAP" || exit 1
+echo "Select variant for '$KEYMAP'"
+VARIANT=$(ls -1 /usr/share/bkeymaps/$KEYMAP | sed "s/\..*$//" | sort | gum filter --no-fuzzy --value="$KEYMAP" --limit 1 --height 20)
+test "$VARIANT" || exit 1
+apk del --quiet --no-progress .deps
+setup-keymap $KEYMAP $VARIANT
+
 setup-interfaces
-rc-update add networking boot
-openrc boot
+rc-update -q add networking boot
+openrc -q boot
 sh <(curl -s -L git.cmplx.dev/netboot-sh/raw/main/main.sh)
 EOF
 
