@@ -30,3 +30,10 @@ umount /mnt/install
 
 mount -t vfat ${TARGET_DISK}1 $BOOTBASE
 mount -t ntfs ${TARGET_DISK}2 $WINBASE
+
+mkdir -p $BOOTBASE/EFI/Microsoft/Boot
+mkdir -p $BOOTBASE/EFI/Boot
+cp -R $WINBASE/Windows/Boot/EFI/* /mnt/boot/EFI/Microsoft/Boot/
+cp $BOOTBASE/EFI/Microsoft/bootmgfw.efi $BOOTBASE/EFI/Boot/bootx64.efi
+
+# TODO BCD, patch with uuids see https://gist.github.com/Moondarker/2c5b7ed1c6372119ebf03f0b12d11e92
