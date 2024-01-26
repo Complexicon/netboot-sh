@@ -16,6 +16,8 @@ echo "setting up partitions"
 echo ", ${BOOT_PART_SIZE}, U" | sfdisk -W always ${TARGET_DISK} -q # create efi partition
 echo ", ," | sfdisk -a ${TARGET_DISK} -W always -q # create main partition
 
+mdev -s
+
 mkfs.vfat -f ${TARGET_DISK}1
 mkfs.ntfs -f ${TARGET_DISK}2
 
