@@ -16,7 +16,7 @@ echo "setting up partitions"
 echo ", ${BOOT_PART_SIZE}, U" | sfdisk ${TARGET_DISK} -q # create efi partition
 echo ", ," | sfdisk -a ${TARGET_DISK} -q # create main partition
 
-mkfs.vfat -F 32 -f ${TARGET_DISK}1
+mkfs.vfat -f ${TARGET_DISK}1
 mkfs.ntfs -f ${TARGET_DISK}2
 
 ./go-winstall-helper --mount=/mnt/install --url="$WINDOWS_ISO" &
