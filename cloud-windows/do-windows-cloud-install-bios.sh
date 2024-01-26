@@ -64,3 +64,7 @@ mv $BOOTBASE/Boot/bootnxt $BOOTBASE
 mv BCD_patched_bios $BOOTBASE/Boot/BCD
 
 dd if=/usr/share/syslinux/mbr.bin of=${TARGET_DISK}
+
+mkdir -p $WINBASE/Windows/Panther
+curl https://git.cmplx.dev/winsetup/main/unattend.xml > $WINBASE/Windows/Panther/unattend.xml
+reboot
