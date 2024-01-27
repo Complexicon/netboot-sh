@@ -46,5 +46,5 @@ cp $BOOTBASE/EFI/Microsoft/Boot/bootmgfw.efi $BOOTBASE/EFI/Boot/bootx64.efi
 cp BCD_patched_efi $BOOTBASE/EFI/Microsoft/Boot/BCD
 
 mkdir -p $WINBASE/Windows/Panther
-curl https://git.cmplx.dev/winsetup/raw/main/unattend.xml > $WINBASE/Windows/Panther/unattend.xml
+curl -L https://git.cmplx.dev/winsetup/raw/main/unattend.xml > $WINBASE/Windows/Panther/unattend.xml
 reboot
