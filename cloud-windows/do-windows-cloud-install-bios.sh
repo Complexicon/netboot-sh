@@ -38,6 +38,10 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TARGET_DISK}
   q # and we're done
 EOF
 
+mdev -s
+sleep 2
+mdev -s
+
 mkfs.ntfs -f ${TARGET_DISK}1
 mkfs.ntfs -f ${TARGET_DISK}2
 
