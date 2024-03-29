@@ -80,9 +80,11 @@ bootstrap_debian() {
 
   echo "debian" > /mnt/etc/hostname
 
+  BIOS_UUID=$(blkid ${TARGET_DISK}1 -s UUID -o value)
   ROOT_UUID=$(blkid ${TARGET_DISK}2 -s UUID -o value)
 
   echo "UUID=\"${ROOT_UUID}\" / ext4 errors=remount-ro 0 1" >> /mnt/etc/fstab
+  echo "UUID=\"${BIOS_UUID}\" /boot vfat defaults 0 1" >> /mnt/etc/fstab
   
   chroot /mnt env DEBIAN_FRONTEND=noninteractive apt install console-setup apt-utils ifupdown -y
   echo "set a root password"
