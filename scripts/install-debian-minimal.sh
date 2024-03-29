@@ -49,7 +49,7 @@ find_disks() {
 BOOT_PART_SIZE=500M
 DISKS=$(find_disks)
 TARGET_DISK=$(echo "$DISKS" | gum choose | cut -d ' ' -f 1)
-TARKGET_DISK=/dev/$TARGET_DISK
+TARGET_DISK=/dev/$TARGET_DISK
 echo "Installing Debian to $TARGET_DISK"
 
 prep_disk_bios() {
