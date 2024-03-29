@@ -49,7 +49,8 @@ find_disks() {
 BOOT_PART_SIZE=500M
 DISKS=$(find_disks)
 TARGET_DISK=$(echo "$DISKS" | gum choose | cut -d ' ' -f 1)
-echo "Installing Debian to /dev/$TARGET_DISK"
+TARKGET_DISK=/dev/$TARGET_DISK
+echo "Installing Debian to $TARGET_DISK"
 
 prep_disk_bios() {
   echo "creating new gpt partition table for ${TARGET_DISK}"
