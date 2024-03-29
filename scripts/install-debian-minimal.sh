@@ -74,7 +74,7 @@ bootstrap_debian() {
   mount ${TARGET_DISK}2 /mnt
   mkdir /mnt/boot
   mount ${TARGET_DISK}1 /mnt/boot
-  debootstrap --arch amd64 --include=systemd-sysv,ifupdown,grub2,iproute2,nano,linux-image-amd64 --variant=minbase bookworm /mnt https://deb.debian.org/debian
+  debootstrap --arch amd64 --include=systemd-sysv,grub2,iproute2,nano,linux-image-amd64 --variant=minbase bookworm /mnt https://deb.debian.org/debian
   mount --make-rslave --rbind /proc /mnt/proc
   mount --make-rslave --rbind /sys /mnt/sys
   mount --make-rslave --rbind /dev /mnt/dev
@@ -83,9 +83,16 @@ bootstrap_debian() {
 
   echo "UUID=\"${ROOT_UUID}\" / ext4 errors=remount-ro 0 1" >> /mnt/etc/fstab
   
-  chroot /mnt apt install console-common
+  chroot /mnt apt install console-common keyboard-configuration ifupdown -y
   echo "set a root password"
   chroot /mnt passwd
+  mv /mnt/root/.bashrc /mnt/root/.bashrc.orig
+  echo "echo executing first run script..." > /mnt/root/.bashrc
+  echo "dpkg-reconfigure keyboard-configuration" >> /mnt/root/.bashrc
+
+  # todo: setup network config first run
+
+  echo "mv /root/.bashrc.orig /root/.bashrc" >> /mnt/root/.bashrc
 }
 
 install_grub_bios() {
