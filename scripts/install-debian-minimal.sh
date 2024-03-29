@@ -31,7 +31,7 @@ is_available_disk() {
 }
 
 find_disks() {
-	local p= disk= vendor= model= d= size= busid=
+	local p= disk= vendor= model= d= size=
 	for p in /sys/block/*/device; do
 		local dev="${p%/device}"
 		dev=${dev#*/sys/block/}
@@ -39,7 +39,6 @@ find_disks() {
   		d=$(echo $dev | sed 's:/:!:g')
   		vendor=$(cat /sys/block/$d/device/vendor 2>/dev/null)
   		model=$(cat /sys/block/$d/device/model 2>/dev/null)
-  		busid=$(readlink -f /sys/block/$d/device 2>/dev/null)
   		size=$(awk '{gb = ($1 * 512)/1000000000; printf "%.1f GB\n", gb}' /sys/block/$d/size 2>/dev/null)
 			echo "$dev ($size $vendor $model)"
 		fi
@@ -89,17 +88,18 @@ bootstrap_debian() {
   echo "set a root password"
   chroot /mnt passwd
   mv /mnt/root/.bashrc /mnt/root/.bashrc.orig
-  echo "echo executing first run script..." > /mnt/root/.bashrc
-  echo "dpkg-reconfigure keyboard-configuration" >> /mnt/root/.bashrc
-  echo "udevadm trigger --subsystem-match=input --action=change" >> /mnt/root/.bashrc
-  echo "setupcon" >> /mnt/root/.bashrc
-  
-  echo "INTERFACES=$(ip link show | awk -F ': ' '{print $2}' | grep . | grep -v lo)" >> /mnt/root/.bashrc
-  echo "echo $INTERFACES" >> /mnt/root/.bashrc
 
-  # todo: setup network config first run
+  cat > /mnt/root/.bashrc <<EOF
+echo executing first run script...
+dpkg-reconfigure keyboard-configuration
+udevadm trigger --subsystem-match=input --action=change
+setupcon > /dev/null 2>&1
+INTERFACES=\$(ip link show | awk -F ': ' '{print \$2}' | grep . | grep -v lo)
+echo \$INTERFACES
 
-  echo "mv /root/.bashrc.orig /root/.bashrc" >> /mnt/root/.bashrc
+mv /root/.bashrc.orig /root/.bashrc
+EOF
+
 }
 
 install_grub_bios() {
