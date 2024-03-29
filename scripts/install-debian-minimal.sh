@@ -79,17 +79,23 @@ bootstrap_debian() {
   mount --make-rslave --rbind /sys /mnt/sys
   mount --make-rslave --rbind /dev /mnt/dev
 
+  echo "debian" > /mnt/etc/hostname
+
   ROOT_UUID=$(blkid ${TARGET_DISK}2 -s UUID -o value)
 
   echo "UUID=\"${ROOT_UUID}\" / ext4 errors=remount-ro 0 1" >> /mnt/etc/fstab
   
-  chroot /mnt env DEBIAN_FRONTEND=noninteractive apt install console-setup ifupdown -y
+  chroot /mnt env DEBIAN_FRONTEND=noninteractive apt install console-setup apt-utils ifupdown -y
   echo "set a root password"
   chroot /mnt passwd
   mv /mnt/root/.bashrc /mnt/root/.bashrc.orig
   echo "echo executing first run script..." > /mnt/root/.bashrc
   echo "dpkg-reconfigure keyboard-configuration" >> /mnt/root/.bashrc
   echo "udevadm trigger --subsystem-match=input --action=change" >> /mnt/root/.bashrc
+  echo "setupcon" >> /mnt/root/.bashrc
+  
+  echo "INTERFACES=$(ip link show | awk -F ': ' '{print $2}' | grep . | grep -v lo)" >> /mnt/root/.bashrc
+  echo "echo $INTERFACES" >> /mnt/root/.bashrc
 
   # todo: setup network config first run
 
