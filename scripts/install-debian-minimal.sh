@@ -53,7 +53,7 @@ TARGET_DISK=/dev/$TARGET_DISK
 echo "Installing Debian to $TARGET_DISK"
 
 prep_disk_bios() {
-  echo "creating new gpt partition table for ${TARGET_DISK}"
+  echo "creating new mbr partition table for ${TARGET_DISK}"
   echo "label: dos" | sfdisk ${TARGET_DISK} -W always -q # create empty dos partition table
   
   echo "setting up partitions"
@@ -83,12 +83,13 @@ bootstrap_debian() {
 
   echo "UUID=\"${ROOT_UUID}\" / ext4 errors=remount-ro 0 1" >> /mnt/etc/fstab
   
-  chroot /mnt apt install console-common keyboard-configuration ifupdown -y
+  chroot /mnt env DEBIAN_FRONTEND=noninteractive apt install console-setup ifupdown -y
   echo "set a root password"
   chroot /mnt passwd
   mv /mnt/root/.bashrc /mnt/root/.bashrc.orig
   echo "echo executing first run script..." > /mnt/root/.bashrc
   echo "dpkg-reconfigure keyboard-configuration" >> /mnt/root/.bashrc
+  echo "udevadm trigger --subsystem-match=input --action=change" >> /mnt/root/.bashrc
 
   # todo: setup network config first run
 
